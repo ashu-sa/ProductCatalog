@@ -52,9 +52,6 @@ The cart is engineered with an offline-first contract: all cart operations (addi
 
 </div>
 
-- **Repository Video File**: [`docs/product_catalog_demo.mp4`](docs/product_catalog_demo.mp4) *(6.1 MB, 1920×1080 @ 30fps with soundtrack & audio cues)*
-- **External Video Link**: *[Paste your unlisted YouTube or Google Drive link here for the Google Form]*
-
 ### Demonstrated Assessment Flows:
 1. **Product Listing & Pagination/Filter**: Grid display showing product images, title, rating, and formatted price.
 2. **Debounced Search**: Typing queries (e.g. `"mascara"`) updates the list via API without race conditions; clearing query recovers the full product set.
