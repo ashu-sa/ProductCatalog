@@ -2,8 +2,6 @@
 
 <div align="center">
 
-  **SPIRE LAB, Indian Institute of Science (IISc), Bangalore**  
-  *Android Developer Practical Assessment*
 
   [![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?style=flat&logo=android&logoColor=white)](https://developer.android.com/)
   [![Language](https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?style=flat&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
@@ -17,18 +15,6 @@
 
 ---
 
-## 📌 Submission Overview
-
-| Field | Details |
-|---|---|
-| **Role** | Android Developer |
-| **Organization** | SPIRE Lab, IISc Bangalore |
-| **Assessment** | Product Catalog & Offline Cart |
-| **Candidate** | Ashutosh Sahoo |
-| **GitHub Repository** | [https://github.com/ashu-sa/ProductCatalog](https://github.com/ashu-sa/ProductCatalog) |
-| **Submission Form** | [Spire Lab Assessment Submission Form](https://forms.gle/VLFtLxSwmmHzGJ4EA) |
-
----
 
 ## 🎯 Objective & Summary
 
