@@ -34,8 +34,8 @@ class ProductDetailViewModel(
         viewModelScope.launch {
             _uiState.value = ProductDetailUiState(isLoading = true)
             when (val r = products.getProduct(productId)) {
-                is AppResult.Success -> _uiState.value = ProductDetailUiState(product = r.data)
-                is AppResult.Error -> _uiState.value = ProductDetailUiState(error = r.message)
+                is AppResult.Success -> _uiState.value = ProductDetailUiState(isLoading = false, product = r.data)
+                is AppResult.Error -> _uiState.value = ProductDetailUiState(isLoading = false, error = r.message)
             }
         }
     }

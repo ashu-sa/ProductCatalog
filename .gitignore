@@ -7,3 +7,4 @@
 .DS_Store
 local.properties
 .kotlin/
+brag-output/
