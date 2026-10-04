@@ -31,8 +31,10 @@ object Routes {
 fun CatalogNavHost(container: AppContainer) {
     val navController = rememberNavController()
     val context = LocalContext.current
-    val isOffline = remember(container) { observeConnectivity(context.applicationContext) }
-        .collectAsState(initial = false).value.let { !it }
+    val isConnected by remember(container) {
+        observeConnectivity(context.applicationContext)
+    }.collectAsState(initial = true)
+    val isOffline = !isConnected
 
     // Shared cart state for badge on listing screen
     val cartVm: CartViewModel = viewModel(factory = CartViewModel.Factory(container.cartRepository))

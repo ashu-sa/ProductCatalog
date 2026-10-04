@@ -13,7 +13,8 @@ class CartRepository(private val dao: CartDao) {
 
     suspend fun add(product: Product, quantity: Int = 1) {
         val existing = dao.getById(product.id)
-        val nextQty = (existing?.quantity ?: 0) + quantity
+        val maxStock = if (product.stock > 0) product.stock else Int.MAX_VALUE
+        val nextQty = ((existing?.quantity ?: 0) + quantity).coerceIn(1, maxStock)
         dao.upsert(
             CartItemEntity(
                 productId = product.id,
@@ -21,7 +22,7 @@ class CartRepository(private val dao: CartDao) {
                 price = product.price,
                 thumbnail = product.thumbnail,
                 stock = product.stock,
-                quantity = nextQty.coerceAtLeast(1),
+                quantity = nextQty,
                 addedAt = existing?.addedAt ?: System.currentTimeMillis()
             )
         )
@@ -31,7 +32,9 @@ class CartRepository(private val dao: CartDao) {
         if (quantity <= 0) {
             dao.deleteById(productId)
         } else {
-            dao.getById(productId)?.copy(quantity = quantity)?.let { dao.upsert(it) }
+            val existing = dao.getById(productId) ?: return
+            val maxStock = if (existing.stock > 0) existing.stock else Int.MAX_VALUE
+            dao.upsert(existing.copy(quantity = quantity.coerceAtMost(maxStock)))
         }
     }
 

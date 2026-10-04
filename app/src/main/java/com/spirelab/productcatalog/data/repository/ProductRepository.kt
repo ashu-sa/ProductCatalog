@@ -34,6 +34,10 @@ class ProductRepository(private val api: ProductApi) {
     private inline fun <T> safeCall(block: () -> T): AppResult<T> {
         return try {
             AppResult.Success(block())
+        } catch (e: kotlin.coroutines.cancellation.CancellationException) {
+            throw e
+        } catch (e: java.util.concurrent.CancellationException) {
+            throw e
         } catch (e: java.net.UnknownHostException) {
             AppResult.Error("No internet connection. Please check your network and retry.", isNetwork = true)
         } catch (e: java.net.SocketTimeoutException) {

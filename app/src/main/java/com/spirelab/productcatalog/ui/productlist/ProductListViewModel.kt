@@ -33,6 +33,7 @@ class ProductListViewModel(
 
     private var searchJob: Job? = null
     private var allProducts: List<Product> = emptyList()
+    private var searchResults: List<Product> = emptyList()
 
     init {
         refresh()
@@ -41,7 +42,14 @@ class ProductListViewModel(
 
     fun refresh() {
         val q = _uiState.value.query
-        if (q.isBlank()) loadProducts() else search(q)
+        if (q.isBlank()) {
+            loadProducts()
+        } else {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                executeSearch(q)
+            }
+        }
     }
 
     fun loadCategories() {
@@ -84,6 +92,7 @@ class ProductListViewModel(
         _uiState.value = _uiState.value.copy(query = newQuery, isSearching = newQuery.isNotBlank())
         searchJob?.cancel()
         if (newQuery.isBlank()) {
+            searchResults = emptyList()
             _uiState.value = _uiState.value.copy(
                 products = applyCategoryFilter(allProducts), error = null, isSearching = false
             )
@@ -91,38 +100,33 @@ class ProductListViewModel(
         }
         searchJob = viewModelScope.launch {
             delay(500) // debounce
-            search(newQuery)
+            executeSearch(newQuery)
         }
     }
 
-    private fun search(query: String) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSearching = true)
-            when (val r = repository.searchProducts(query)) {
-                is AppResult.Success -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        products = applyCategoryFilter(r.data),
-                        error = null
-                    )
-                }
-                is AppResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false, error = r.message, isOffline = r.isNetwork
-                    )
-                }
+    private suspend fun executeSearch(query: String) {
+        _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSearching = true)
+        when (val r = repository.searchProducts(query)) {
+            is AppResult.Success -> {
+                searchResults = r.data
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    products = applyCategoryFilter(searchResults),
+                    error = null
+                )
+            }
+            is AppResult.Error -> {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false, error = r.message, isOffline = r.isNetwork
+                )
             }
         }
     }
 
     fun onCategorySelected(category: String?) {
         _uiState.value = _uiState.value.copy(selectedCategory = category)
-        val base = if (_uiState.value.query.isBlank()) allProducts else _uiState.value.products
-        // If searching, filter current results; else filter full list.
+        val base = if (_uiState.value.query.isBlank()) allProducts else searchResults
         _uiState.value = _uiState.value.copy(products = applyCategoryFilter(base))
-        if (_uiState.value.query.isBlank() && category != null) {
-            // Also try server-side accuracy later; client filter is enough for the demo.
-        }
     }
 
     private fun applyCategoryFilter(list: List<Product>): List<Product> {

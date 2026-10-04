@@ -19,12 +19,13 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val summary: StateFlow<CartSummary> =
-        repository.observeItems()
-            .map { CartRepository.summarize(it) }
+        items.map { CartRepository.summarize(it) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CartSummary(0, 0.0))
 
     fun increase(item: CartItemEntity) {
-        viewModelScope.launch { repository.setQuantity(item.productId, item.quantity + 1) }
+        if (item.quantity < item.stock) {
+            viewModelScope.launch { repository.setQuantity(item.productId, item.quantity + 1) }
+        }
     }
 
     fun decrease(item: CartItemEntity) {
