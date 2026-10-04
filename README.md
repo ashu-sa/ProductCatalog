@@ -44,8 +44,16 @@ The cart is engineered with an offline-first contract: all cart operations (addi
 
 ## 🎥 Video Demonstration
 
-- **App Walkthrough Video**: `docs/product_catalog_demo.mp4` *(or see attached Google Drive / YouTube link below)*
-- **Demo Link**: *[Insert Unlisted YouTube / Google Drive Video Link Here]*
+<div align="center">
+
+[![Product Catalog & Offline Cart Video Demo](docs/product_catalog_demo_poster.jpg)](docs/product_catalog_demo.mp4)
+
+*▶️ High-definition 1080p demo video designed with `brag`: [`docs/product_catalog_demo.mp4`](docs/product_catalog_demo.mp4)*
+
+</div>
+
+- **Repository Video File**: [`docs/product_catalog_demo.mp4`](docs/product_catalog_demo.mp4) *(6.1 MB, 1920×1080 @ 30fps with soundtrack & audio cues)*
+- **External Video Link**: *[Paste your unlisted YouTube or Google Drive link here for the Google Form]*
 
 ### Demonstrated Assessment Flows:
 1. **Product Listing & Pagination/Filter**: Grid display showing product images, title, rating, and formatted price.
