@@ -24,7 +24,7 @@ Prerequisites: JDK 17+, Android SDK with Platform 35 + Build-Tools, internet for
 
 ```bash
 # 1. Clone
-git clone <your-repo-url>
+git clone https://github.com/ashu-sa/ProductCatalog.git
 cd ProductCatalog
 
 # 2. Point Gradle at your SDK (or set ANDROID_HOME / ANDROID_SDK_ROOT)
